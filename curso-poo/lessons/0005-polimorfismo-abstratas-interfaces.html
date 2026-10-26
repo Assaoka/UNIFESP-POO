@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>Aula 5: Polimorfismo, Classes Abstratas e Interfaces</title>
   <style>
     :root {
@@ -195,12 +195,26 @@
       color: var(--text-muted);
       font-size: 0.9rem;
     }
+  
+    /* Otimizações Mobile */
+    @media (max-width: 640px) {
+      body { padding: 1rem 0.5rem; }
+      .container { padding: 1.25rem 0.85rem; border-radius: 10px; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.25rem; }
+      .nav-bar { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .option-btn { padding: 0.75rem 0.85rem; font-size: 0.9rem; line-height: 1.4; }
+      .tdd-cycle { grid-template-columns: 1fr; }
+      .matrix-table th, .matrix-table td { padding: 0.6rem 0.5rem; font-size: 0.85rem; }
+      pre { padding: 0.85rem; font-size: 0.82rem; }
+    }
+
   </style>
 </head>
 <body>
   <div class="container">
     <div class="nav-bar">
-      <a href="../index.html" class="nav-btn">← Voltar ao Índice do Curso</a>
+      <a href="../../index.html" class="nav-btn">← Voltar ao Índice do Curso</a>
       <span style="color: var(--text-muted); font-size: 0.9rem;">Módulo 5 • Aula 5 de 5</span>
     </div>
 

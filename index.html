@@ -2,13 +2,362 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=curso-poo/index.html">
-  <title>Redirecionando para Curso POO</title>
-  <script>
-    window.location.href = "curso-poo/index.html";
-  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="description" content="Curso Preparatório Completo de POO e História da Computação para Avaliação UNIFESP com Simuladores Interativos.">
+  <title>Preparatório Completo de POO & Computação</title>
+  <style>
+    :root {
+      --bg-primary: #0a0f1d;
+      --bg-surface: #131c31;
+      --bg-card: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --accent-glow: rgba(56, 189, 248, 0.25);
+      --border: #334155;
+      --success: #22c55e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 1.5rem 1rem;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .badge {
+      display: inline-block;
+      background: var(--accent-glow);
+      color: var(--accent);
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+    }
+    h1 {
+      font-size: clamp(1.8rem, 6vw, 2.7rem);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.85rem;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p.lead {
+      font-size: clamp(0.95rem, 3.5vw, 1.15rem);
+      color: var(--text-muted);
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.85rem;
+      margin: 2rem 0;
+    }
+    @media (min-width: 640px) {
+      .stats-bar {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.2rem;
+      }
+    }
+    .stat-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      padding: 1rem 0.75rem;
+      border-radius: 12px;
+      text-align: center;
+    }
+    .stat-num {
+      font-size: clamp(1.4rem, 4.5vw, 1.8rem);
+      font-weight: 800;
+      color: var(--accent);
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.25rem;
+    }
+    .section-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin: 2rem 0 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .lessons-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+    .lesson-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.35rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      color: inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .lesson-card:hover, .lesson-card:active {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px -8px var(--accent-glow);
+    }
+    .lesson-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .lesson-num {
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .lesson-tag {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--success);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .lesson-title {
+      font-size: clamp(1.15rem, 4vw, 1.35rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.45rem;
+      line-height: 1.3;
+    }
+    .lesson-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1.2rem;
+      line-height: 1.5;
+    }
+    .lesson-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 0.85rem;
+    }
+    .action-btn {
+      color: var(--accent);
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .reference-box {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid var(--accent);
+      border-radius: 14px;
+      padding: 1.4rem;
+      margin-top: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    @media (min-width: 680px) {
+      .reference-box {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+    .reference-box h3 {
+      color: #fff;
+      font-size: 1.2rem;
+      margin-bottom: 0.25rem;
+    }
+    .reference-box p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .ref-btn {
+      background: var(--accent);
+      color: #0f172a !important;
+      padding: 0.75rem 1.2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      text-align: center;
+      white-space: nowrap;
+      transition: background 0.2s;
+      display: block;
+    }
+    .ref-btn:hover {
+      background: #7dd3fc;
+    }
+    footer {
+      text-align: center;
+      margin-top: 3.5rem;
+      padding: 1rem 0;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+  </style>
 </head>
-<body style="font-family: sans-serif; background: #0a0f1d; color: #f8fafc; text-align: center; padding-top: 20vh;">
-  <p>Redirecionando para o <a href="curso-poo/index.html" style="color: #38bdf8;">Curso Preparatório de POO & Computação</a>...</p>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge">Curso Intensivo Acadêmico</span>
+      <h1>Dominando POO & História da Computação</h1>
+      <p class="lead">Preparatório completo focado na avaliação acadêmica. Todo o conteúdo em TypeScript moderno, com teoria aprofundada e simuladores interativos com as 10 questões da prova e perguntas complementares.</p>
+
+      <div class="stats-bar">
+        <div class="stat-card">
+          <div class="stat-num">5</div>
+          <div class="stat-label">Aulas Modulares</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">10 / 10</div>
+          <div class="stat-label">Questões Cobertas</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">11</div>
+          <div class="stat-label">Questões Inéditas</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">TypeScript & OO</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="section-title">
+      <span>📚 Trilhas de Aprendizagem</span>
+    </div>
+
+    <div class="lessons-grid">
+      <!-- AULA 1 -->
+      <a href="curso-poo/lessons/0001-historia-da-computacao-e-paradigmas.html" class="lesson-card">
+        <div>
+          <div class="lesson-header">
+            <span class="lesson-num">Aula 1</span>
+            <span class="lesson-tag">Cobre a Questão 1</span>
+          </div>
+          <div class="lesson-title">A Origem da Computação e a Evolução dos Paradigmas</div>
+          <div class="lesson-desc">O Entscheidungsproblem de Hilbert (1928), os Teoremas de Incompletude de Gödel (1930), a Máquina de Turing (1936), Grace Hopper, FORTRAN, Simula 67, Dijkstra e Smalltalk.</div>
+        </div>
+        <div class="lesson-footer">
+          <span>Quiz: Questão 1 da Prova + 3 Inéditas</span>
+          <span class="action-btn">Iniciar Aula →</span>
+        </div>
+      </a>
+
+      <!-- AULA 2 -->
+      <a href="curso-poo/lessons/0002-sistemas-de-tipagem-e-execucao.html" class="lesson-card">
+        <div>
+          <div class="lesson-header">
+            <span class="lesson-num">Aula 2</span>
+            <span class="lesson-tag">Cobre as Questões 5 e 6</span>
+          </div>
+          <div class="lesson-title">Sistemas de Tipagem e Modos de Execução</div>
+          <div class="lesson-desc">Tipagem Dinâmica vs Estática, Forte vs Fraca, Compilação vs Interpretação. Comportamentos peculiares de coerção do JavaScript e o papel do TypeScript na checagem estática em tempo de compilação.</div>
+        </div>
+        <div class="lesson-footer">
+          <span>Quiz: Questões 5 e 6 da Prova + 2 Inéditas</span>
+          <span class="action-btn">Iniciar Aula →</span>
+        </div>
+      </a>
+
+      <!-- AULA 3 -->
+      <a href="curso-poo/lessons/0003-fundamentos-poo-classes-objetos.html" class="lesson-card">
+        <div>
+          <div class="lesson-header">
+            <span class="lesson-num">Aula 3</span>
+            <span class="lesson-tag">Cobre as Questões 3 e 8</span>
+          </div>
+          <div class="lesson-title">Fundamentos de POO — Classes, Atributos, Métodos e Coleções</div>
+          <div class="lesson-desc">Diferença ontológica entre Classe e Instância (Objeto), papéis do <code>constructor</code> e do <code>this</code>. Modelagem em TypeScript e teste de mesa detalhado do Carrinho e Produto.</div>
+        </div>
+        <div class="lesson-footer">
+          <span>Quiz: Questões 3 e 8 da Prova + 2 Inéditas</span>
+          <span class="action-btn">Iniciar Aula →</span>
+        </div>
+      </a>
+
+      <!-- AULA 4 -->
+      <a href="curso-poo/lessons/0004-excecoes-e-tdd.html" class="lesson-card">
+        <div>
+          <div class="lesson-header">
+            <span class="lesson-num">Aula 4</span>
+            <span class="lesson-tag">Cobre as Questões 2 e 4</span>
+          </div>
+          <div class="lesson-title">Tratamento de Exceções e o Ciclo TDD</div>
+          <div class="lesson-desc">O que acontece com exceções não tratadas (interrupção e stack trace no console), hierarquia de exceções de domínio em TypeScript e o ciclo Red-Green-Refactor do TDD (Teste → Código → Refatoração).</div>
+        </div>
+        <div class="lesson-footer">
+          <span>Quiz: Questões 2 e 4 da Prova + 2 Inéditas</span>
+          <span class="action-btn">Iniciar Aula →</span>
+        </div>
+      </a>
+
+      <!-- AULA 5 -->
+      <a href="curso-poo/lessons/0005-polimorfismo-abstratas-interfaces.html" class="lesson-card">
+        <div>
+          <div class="lesson-header">
+            <span class="lesson-num">Aula 5</span>
+            <span class="lesson-tag">Cobre as Questões 7, 9 e 10</span>
+          </div>
+          <div class="lesson-title">Polimorfismo, Classes Abstratas e Interfaces</div>
+          <div class="lesson-desc">Definição formal de polimorfismo, dynamic dispatch com Pet/Gato/Cachorro, e a matriz comparativa definitiva entre Classes Abstratas (métodos concretos e runtime) e Interfaces (contratos estáticos e type erasure).</div>
+        </div>
+        <div class="lesson-footer">
+          <span>Quiz: Questões 7, 9 e 10 da Prova + 2 Inéditas</span>
+          <span class="action-btn">Iniciar Aula →</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- BOX DE MATERIAL DE REFERÊNCIA -->
+    <div class="reference-box">
+      <div>
+        <h3>📋 Guia Rápido & Cheatsheet de Revisão</h3>
+        <p>Tabela periódica com todas as datas históricas, matriz de tipagem e fórmulas para revisão relâmpago antes de entrar na prova.</p>
+      </div>
+      <a href="curso-poo/reference/guia-definitivo-revisao.html" class="ref-btn">Abrir Guia de Revisão →</a>
+    </div>
+
+    <footer>
+      <p>Desenvolvido com <code>/teach</code> • Preparatório de Alta Performance para POO e Computação</p>
+    </footer>
+  </div>
 </body>
 </html>

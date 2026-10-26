@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 1: História da Computação e Evolução dos Paradigmas</title>
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-surface: #1e293b;
+      --bg-card: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --border: #475569;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--bg-surface);
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+    }
+    .nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-btn {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.2s;
+    }
+    .nav-btn:hover { color: var(--accent-hover); }
+    h1 { font-size: 2.2rem; color: var(--accent); margin-bottom: 1rem; }
+    h2 { font-size: 1.5rem; color: #e2e8f0; margin: 2rem 0 1rem; border-left: 4px solid var(--accent); padding-left: 0.8rem; }
+    h3 { font-size: 1.2rem; color: #cbd5e1; margin: 1.5rem 0 0.5rem; }
+    p { margin-bottom: 1rem; color: #cbd5e1; }
+    .badge {
+      display: inline-block;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    .timeline {
+      position: relative;
+      border-left: 2px solid var(--accent);
+      margin: 1.5rem 0 2rem 1rem;
+      padding-left: 1.5rem;
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 1.75rem;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.95rem;
+      top: 0.35rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg-surface);
+    }
+    .timeline-year {
+      font-weight: bold;
+      color: var(--accent);
+      font-size: 1.1rem;
+    }
+    .timeline-title {
+      font-weight: 600;
+      color: #f1f5f9;
+      font-size: 1.05rem;
+    }
+    .highlight-box {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 1.25rem;
+      border-radius: 10px;
+      margin: 1.5rem 0;
+    }
+    .quiz-section {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 2px dashed var(--border);
+    }
+    .quiz-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+    }
+    .quiz-card.official {
+      border: 2px solid var(--accent);
+      background: #1e293b;
+    }
+    .quiz-tag {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 700;
+      display: inline-block;
+      margin-bottom: 0.75rem;
+    }
+    .tag-official { background: var(--accent); color: #0f172a; }
+    .tag-bonus { background: #64748b; color: #f8fafc; }
+    .question-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #f8fafc;
+    }
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      padding: 0.85rem 1.2rem;
+      background: #1e293b;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: #e2e8f0;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    .option-btn:hover:not(:disabled) {
+      background: #334155;
+      border-color: var(--accent);
+    }
+    .option-btn.correct {
+      background: rgba(34, 197, 94, 0.2) !important;
+      border-color: var(--success) !important;
+      color: #86efac !important;
+      font-weight: 600;
+    }
+    .option-btn.incorrect {
+      background: rgba(239, 68, 68, 0.2) !important;
+      border-color: var(--danger) !important;
+      color: #fca5a5 !important;
+    }
+    .feedback {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      display: none;
+      font-size: 0.95rem;
+    }
+    .feedback.show { display: block; }
+    .feedback.correct-feedback {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid var(--success);
+      color: #bbf7d0;
+    }
+    .feedback.incorrect-feedback {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid var(--danger);
+      color: #fecaca;
+    }
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav-bar">
+      <a href="../index.html" class="nav-btn">← Voltar ao Índice do Curso</a>
+      <span style="color: var(--text-muted); font-size: 0.9rem;">Módulo 1 • Aula 1 de 5</span>
+    </div>
+
+    <span class="badge">HISTÓRIA & TEORIA DA COMPUTAÇÃO</span>
+    <h1>Aula 1: A Origem da Computação e a Evolução dos Paradigmas</h1>
+    <p>Nesta aula, estudamos a gênese matemática da ciência da computação e a linha do tempo que culminou na <strong>Programação Orientada a Objetos (POO)</strong>. Este conteúdo é a base direta da <strong>Questão 1 da sua avaliação</strong>.</p>
+
+    <h2>1. O Entscheidungsproblem e o Nascimento da Computação</h2>
+    <p>Em 1928, no Congresso Internacional de Matemáticos em Bolonha, o lendário matemático alemão <strong>David Hilbert</strong> formalizou três perguntas fundamentais para a matemática:</p>
+    <ol style="margin-left: 1.5rem; margin-bottom: 1.5rem; color: #cbd5e1;">
+      <li><strong>Completude:</strong> Toda afirmação matemática verdadeira pode ser formalmente provada?</li>
+      <li><strong>Consistência:</strong> É impossível provar uma afirmação falsa a partir dos axiomas?</li>
+      <li><strong>Decidibilidade (<em>Entscheidungsproblem</em>):</strong> Existe um algoritmo definitivo capaz de analisar qualquer proposição matemática e responder com certeza se ela é válida ou não?</li>
+    </ol>
+
+    <div class="highlight-box">
+      <h3 style="margin-top: 0; color: var(--accent);">As Respostas que Mudaram a História:</h3>
+      <p><strong>1930 - Kurt Gödel:</strong> Através dos famosos <em>Teoremas da Incompletude</em>, Gödel provou que a matemática não pode ser simultaneamente completa e consistente. Em qualquer sistema formal capaz de expressar aritmética, haverá verdades indecidíveis pelo próprio sistema.</p>
+      <p><strong>1936 - Alonzo Church & Alan Turing:</strong> Separada e independentemente, responderam à terceira questão de Hilbert (decidibilidade) de forma <strong>negativa</strong>:</p>
+      <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+        <li>Church formulou o <strong>Cálculo Lambda</strong> (abril de 1936).</li>
+        <li>Alan Turing publicou em novembro de 1936 o artigo histórico <em>"On Computable Numbers, with an Application to the Entscheidungsproblem"</em>, introduzindo o modelo formal da <strong>Máquina de Turing</strong>.</li>
+      </ul>
+      <p style="margin-top: 0.75rem;"><strong>O Impacto Central:</strong> Turing provou que o <em>Problema da Parada (Halting Problem)</em> é indecidível — não existe nenhum algoritmo universal capaz de prever se um programa genérico irá terminar ou entrar em loop infinito. Com isso, Turing provou que o <em>Entscheidungsproblem</em> é indecidível e estabeleceu as fundações da computação moderna e da teoria da computabilidade.</p>
+    </div>
+
+    <h2>2. Linha do Tempo dos Paradigmas e Linguagens</h2>
+    <p>A evolução dos computadores partiu da matemática abstrata para a criação de compiladores e linguagens estruturadas e orientadas a objetos:</p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">1951</div>
+        <div class="timeline-title">Grace Hopper — Compilador A-0</div>
+        <p>Pioneira no desenvolvimento do primeiro compilador da história e defensora de que computadores deveriam ser programados em linguagens legíveis por humanos, originando o termo "compilador".</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">1953 - 1957</div>
+        <div class="timeline-title">John Backus — FORTRAN (IBM)</div>
+        <p>Primeiro compilador e linguagem de alto nível comercializada com sucesso, focada em cálculos científicos e de engenharia (<em>FORmula TRANslation</em>).</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">1958</div>
+        <div class="timeline-title">John McCarthy — LISP (MIT)</div>
+        <p>Inspirada nos princípios do cálculo lambda de Church, manipulando listas de expressões e estabelecendo as raízes do paradigma funcional e da inteligência artificial.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">1966</div>
+        <div class="timeline-title">Ole-Johan Dahl & Kristen Nygaard — Simula 67 (Noruega)</div>
+        <p><strong>A primeira linguagem a introduzir formalmente os conceitos de Programação Orientada a Objetos (POO):</strong> classes, objetos, herança e subclasses, criada para modelar simulações de eventos discretos.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">1968</div>
+        <div class="timeline-title">Edsger Dijkstra — "Go To Statement Considered Harmful"</div>
+        <p>Artigo marcante que criticou desvios incondicionais e popularizou a <strong>Programação Estruturada</strong> (sequência, seleção e repetição), base para o fluxo de controle de quase todas as linguagens modernas.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">1971</div>
+        <div class="timeline-title">Alan Kay & Xerox PARC — Smalltalk</div>
+        <p>Linguagem <em>puramente orientada a objetos</em> ("tudo é um objeto") com troca dinâmica de mensagens. O Smalltalk consolidou o termo "Orientação a Objetos" e influenciou diretamente linguagens como C++, Java, Python, Ruby e o ecossistema moderno do TypeScript.</p>
+      </div>
+    </div>
+
+    <!-- SEÇÃO DE QUIZ -->
+    <div class="quiz-section">
+      <h2>Simulador & Quiz da Aula 1</h2>
+      <p>Teste seus conhecimentos com a questão oficial da prova e questões complementares para fixação definitiva.</p>
+
+      <!-- QUESTÃO OFICIAL DA PROVA -->
+      <div class="quiz-card official" id="q1">
+        <span class="quiz-tag tag-official">Questão 1 da Prova Oficial</span>
+        <div class="question-title">Qual marco histórico estabeleceu a base da computação moderna, provando a indecidibilidade do <em>Entscheidungsproblem</em> (problema da decisão)?</div>
+        <ul class="options-list">
+          <li><button class="option-btn" onclick="checkAnswer('q1', 0, false)">A) Criação do FORTRAN (1957)</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q1', 1, false)">B) Desenvolvimento do Smalltalk (1971)</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q1', 2, false)">C) Teorema da Incompletude de Gödel (1930)</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q1', 3, true)">D) Máquina de Turing (1936)</button></li>
+        </ul>
+        <div class="feedback" id="q1-feedback"></div>
+      </div>
+
+      <!-- QUESTÃO COMPLEMENTAR 1 -->
+      <div class="quiz-card" id="q1_bonus1">
+        <span class="quiz-tag tag-bonus">Questão Inédita 1.1</span>
+        <div class="question-title">Qual foi historicamente a primeira linguagem de programação a introduzir os conceitos fundamentais de classes, objetos e herança que definiram o paradigma de Orientação a Objetos?</div>
+        <ul class="options-list">
+          <li><button class="option-btn" onclick="checkAnswer('q1_bonus1', 0, false)">A) FORTRAN (1957)</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q1_bonus1', 1, true)">B) Simula (1966)</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q1_bonus1', 2, false)">C) LISP (1958)</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q1_bonus1', 3, false)">D) C++ (1983)</button></li>
+        </ul>
+        <div class="feedback" id="q1_bonus1-feedback"></div>
+      </div>
+
+      <!-- QUESTÃO COMPLEMENTAR 2 -->
+      <div class="quiz-card" id="q1_bonus2">
+        <span class="quiz-tag tag-bonus">Questão Inédita 1.2</span>
+        <div class="question-title">O célebre artigo de Edsger Dijkstra em 1968, <em>"Go To Statement Considered Harmful"</em>, foi o pilar para a consolidação de qual paradigma/estilo de programação?</div>
+        <ul class="options-list">
+          <li><button class="option-btn" onclick="checkAnswer('q1_bonus2', 0, false)">A) Programação Orientada a Aspectos.</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q1_bonus2', 1, false)">B) Programação Puramente Funcional.</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q1_bonus2', 2, true)">C) Programação Estruturada.</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q1_bonus2', 3, false)">D) Programação Concorrente Baseada em Atores.</button></li>
+        </ul>
+        <div class="feedback" id="q1_bonus2-feedback"></div>
+      </div>
+
+      <!-- QUESTÃO COMPLEMENTAR 3 -->
+      <div class="quiz-card" id="q1_bonus3">
+        <span class="quiz-tag tag-bonus">Questão Inédita 1.3</span>
+        <div class="question-title">Sobre Alan Kay e a linguagem Smalltalk desenvolvida na Xerox PARC (1971), é correto afirmar que:</div>
+        <ul class="options-list">
+          <li><button class="option-btn" onclick="checkAnswer('q1_bonus3', 0, false)">A) Foi a primeira linguagem a eliminar tipos de dados primitivos para criar código de máquina estático.</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q1_bonus3', 1, true)">B) Consolidou o paradigma orientado a objetos baseado na premissa de que "tudo é um objeto" e troca de mensagens.</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q1_bonus3', 2, false)">C) Serviu como o primeiro compilador comercial de alto nível voltado para cálculos científicos pesados.</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q1_bonus3', 3, false)">D) Foi criada por Grace Hopper com foco em automação de relatórios financeiros de grande porte.</button></li>
+        </ul>
+        <div class="feedback" id="q1_bonus3-feedback"></div>
+      </div>
+    </div>
+
+    <footer>
+      <p>Curso Preparatório POO & Computação • <a href="0002-sistemas-de-tipagem-e-execucao.html" style="color:var(--accent);">Próxima Aula: Tipagem & Execução →</a></p>
+    </footer>
+  </div>
+
+  <script>
+    const explanations = {
+      q1: "<strong>Correta: D!</strong> Alan Turing introduziu a Máquina de Turing em seu artigo de 1936 ('On Computable Numbers...') para demonstrar a indecidibilidade do Problema da Parada e do Entscheidungsproblem de Hilbert. Gödel provou a incompletude da matemática em 1930, FORTRAN foi o primeiro compilador de alto nível (1957) e Smalltalk (1971) foi o marco da POO pura.",
+      q1_bonus1: "<strong>Correta: B!</strong> O Simula (criado por Dahl e Nygaard na Noruega em 1966) foi a primeira linguagem com suporte nativo a classes e herança. O Smalltalk consolidou o paradigma posteriormente, enquanto FORTRAN e LISP pertencem a outros marcos históricos.",
+      q1_bonus2: "<strong>Correta: C!</strong> Dijkstra revolucionou o desenvolvimento ao combater o uso caótico de desvios incondicionais (GOTO), fundamentando a Programação Estruturada organizada em blocos, condicionais (if/else) e laços iterativos.",
+      q1_bonus3: "<strong>Correta: B!</strong> O Smalltalk (1971) de Alan Kay popularizou e cunhou formalmente a expressão 'Orientação a Objetos', tratando até mesmo números e controle de fluxo como mensagens entre objetos."
+    };
+
+    function checkAnswer(questionId, selectedIdx, isCorrect) {
+      const card = document.getElementById(questionId);
+      const buttons = card.querySelectorAll('.option-btn');
+      const feedback = document.getElementById(questionId + '-feedback');
+
+      buttons.forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === selectedIdx) {
+          btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+        }
+      });
+
+      feedback.className = 'feedback show ' + (isCorrect ? 'correct-feedback' : 'incorrect-feedback');
+      feedback.innerHTML = (isCorrect ? "✅ <strong>Parabéns, você acertou!</strong><br>" : "❌ <strong>Resposta incorreta.</strong><br>") + explanations[questionId];
+    }
+  </script>
+</body>
+</html>

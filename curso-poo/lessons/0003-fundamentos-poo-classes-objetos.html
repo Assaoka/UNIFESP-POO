@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 3: Fundamentos de POO em TypeScript</title>
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-surface: #1e293b;
+      --bg-card: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --border: #475569;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--bg-surface);
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+    }
+    .nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-btn {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .nav-btn:hover { color: var(--accent-hover); }
+    h1 { font-size: 2.2rem; color: var(--accent); margin-bottom: 1rem; }
+    h2 { font-size: 1.5rem; color: #e2e8f0; margin: 2rem 0 1rem; border-left: 4px solid var(--accent); padding-left: 0.8rem; }
+    h3 { font-size: 1.2rem; color: #cbd5e1; margin: 1.5rem 0 0.5rem; }
+    p { margin-bottom: 1rem; color: #cbd5e1; }
+    .badge {
+      display: inline-block;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    pre {
+      background: #090d16;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+      font-family: 'Consolas', monospace;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+    }
+    .code-comment { color: #64748b; }
+    .code-kw { color: #f43f5e; }
+    .code-type { color: #38bdf8; }
+    .code-str { color: #a3e635; }
+    .code-num { color: #fb923c; }
+    .highlight-box {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 1.25rem;
+      border-radius: 10px;
+      margin: 1.5rem 0;
+    }
+    .step-box {
+      background: #1e293b;
+      border-left: 3px solid var(--accent);
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .quiz-section {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 2px dashed var(--border);
+    }
+    .quiz-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+    }
+    .quiz-card.official {
+      border: 2px solid var(--accent);
+      background: #1e293b;
+    }
+    .quiz-tag {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 700;
+      display: inline-block;
+      margin-bottom: 0.75rem;
+    }
+    .tag-official { background: var(--accent); color: #0f172a; }
+    .tag-bonus { background: #64748b; color: #f8fafc; }
+    .question-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #f8fafc;
+    }
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      padding: 0.85rem 1.2rem;
+      background: #1e293b;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: #e2e8f0;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    .option-btn:hover:not(:disabled) {
+      background: #334155;
+      border-color: var(--accent);
+    }
+    .option-btn.correct {
+      background: rgba(34, 197, 94, 0.2) !important;
+      border-color: var(--success) !important;
+      color: #86efac !important;
+      font-weight: 600;
+    }
+    .option-btn.incorrect {
+      background: rgba(239, 68, 68, 0.2) !important;
+      border-color: var(--danger) !important;
+      color: #fca5a5 !important;
+    }
+    .feedback {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      display: none;
+      font-size: 0.95rem;
+    }
+    .feedback.show { display: block; }
+    .feedback.correct-feedback {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid var(--success);
+      color: #bbf7d0;
+    }
+    .feedback.incorrect-feedback {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid var(--danger);
+      color: #fecaca;
+    }
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav-bar">
+      <a href="../index.html" class="nav-btn">← Voltar ao Índice do Curso</a>
+      <span style="color: var(--text-muted); font-size: 0.9rem;">Módulo 3 • Aula 3 de 5</span>
+    </div>
+
+    <span class="badge">POO EM TYPESCRIPT</span>
+    <h1>Aula 3: Fundamentos de POO — Classes, Atributos, Métodos e Coleções</h1>
+    <p>Nesta aula, convertemos os modelos das notas de aula para <strong>TypeScript</strong> moderno e destrinchamos exatamente como instâncias interagem com atributos e métodos. Esta aula prepara você para as <strong>Questões 3 e 8 da prova</strong>.</p>
+
+    <h2>1. O Modelo Mental: Classe vs Instância (Objeto)</h2>
+    <div class="highlight-box">
+      <p><strong>Classe:</strong> É o molde, planta arquitetônica ou definição abstrata de uma estrutura de dados e comportamento. Define quais <em>atributos</em> (estado) e <em>métodos</em> (comportamento) os objetos terão.</p>
+      <p><strong>Instância (Objeto):</strong> É o elemento concreto alocado na memória, gerado a partir do molde da classe através da palavra-chave <code>new</code>.</p>
+      <p><strong>Construtor (`constructor`):</strong> É o método especial executado automaticamente no instante em que o objeto é instanciado para inicializar os atributos daquele objeto específico.</p>
+    </div>
+
+    <h2>2. Análise Passo a Passo do Código da Questão 8</h2>
+    <pre><code><span class="code-kw">class</span> <span class="code-type">Pessoa</span> {
+  nome: <span class="code-type">string</span>;
+  idade: <span class="code-type">number</span>;
+
+  <span class="code-comment">// Construtor: inicializa os atributos do objeto</span>
+  <span class="code-kw">constructor</span>(nome: <span class="code-type">string</span>, idade: <span class="code-type">number</span>) {
+    <span class="code-kw">this</span>.nome = nome;
+    <span class="code-kw">this</span>.idade = idade;
+  }
+
+  <span class="code-comment">// Método de instância: comportamento acessível pelo objeto</span>
+  saudacao(): <span class="code-type">string</span> {
+    <span class="code-kw">return</span> <span class="code-str">`Olá, meu nome é ${<span class="code-kw">this</span>.nome} e tenho ${<span class="code-kw">this</span>.idade} anos.`</span>;
+  }
+}
+
+<span class="code-comment">// Instanciação: 'p1' é um objeto concreto (instância) de 'Pessoa'</span>
+<span class="code-kw">const</span> p1 = <span class="code-kw">new</span> <span class="code-type">Pessoa</span>(<span class="code-str">"Alice"</span>, <span class="code-num">30</span>);
+console.log(p1.saudacao());</code></pre>
+
+    <div class="step-box">
+      <p><strong>O que é o que aqui?</strong></p>
+      <ul style="margin-left: 1.5rem;">
+        <li><code>Pessoa</code> é a <strong>classe</strong> (o molde).</li>
+        <li><code>p1</code> é uma <strong>instância (objeto)</strong> da classe <code>Pessoa</code>.</li>
+        <li><code>nome</code> e <code>idade</code> são <strong>atributos / campos</strong> de instância.</li>
+        <li><code>saudacao</code> é um <strong>método</strong> da classe.</li>
+        <li><code>constructor</code> é a <strong>função construtora</strong> responsável pela inicialização.</li>
+      </ul>
+    </div>
+
+    <h2>3. Composição de Classes e Coleções: Rastreando a Questão 3</h2>
+    <p>Na orientação a objetos, objetos frequentemente compõem outros objetos. Veja a classe <code>Carrinho</code> que gerencia uma lista de <code>Produto</code>:</p>
+
+    <pre><code><span class="code-kw">class</span> <span class="code-type">Produto</span> {
+  nome: <span class="code-type">string</span>;
+  preco: <span class="code-type">number</span>;
+  tags: <span class="code-type">string</span>[];
+
+  <span class="code-kw">constructor</span>(nome: <span class="code-type">string</span>, preco: <span class="code-type">number</span>, tags: <span class="code-type">string</span>[] = []) {
+    <span class="code-kw">this</span>.nome = nome;
+    <span class="code-kw">this</span>.preco = preco;
+    <span class="code-kw">this</span>.tags = tags;
+  }
+
+  aplicarDesconto(percentual: <span class="code-type">number</span>): <span class="code-type">void</span> {
+    <span class="code-kw">this</span>.preco -= <span class="code-kw">this</span>.preco * (percentual / <span class="code-num">100</span>);
+  }
+}
+
+<span class="code-kw">class</span> <span class="code-type">Carrinho</span> {
+  produtos: <span class="code-type">Produto</span>[];
+
+  <span class="code-kw">constructor</span>(produtos: <span class="code-type">Produto</span>[] = []) {
+    <span class="code-kw">this</span>.produtos = produtos;
+  }
+
+  calcularTotal(): <span class="code-type">number</span> {
+    <span class="code-kw">return</span> <span class="code-kw">this</span>.produtos.reduce((acc, p) => acc + p.preco, <span class="code-num">0</span>);
+  }
+
+  toString(): <span class="code-type">string</span> {
+    <span class="code-kw">return</span> <span class="code-str">`Carrinho: ${<span class="code-kw">this</span>.produtos.length} produtos, Total: R$${<span class="code-kw">this</span>.calcularTotal().toFixed(2)}`</span>;
+  }
+}</code></pre>
+
+    <div class="step-box">
+      <h3 style="margin-top: 0; color: var(--accent);">Rastreamento Minucioso da Execução (Teste de Mesa):</h3>
+      <ol style="margin-left: 1.5rem;">
+        <li><code>produto1 = new Produto("Camisa", 49.90, ["roupa", "moda"]);</code> → Preço inicial: <strong>49.90</strong>.</li>
+        <li><code>produto2 = new Produto("Tênis", 120.00, ["calçado", "esporte"]);</code> → Preço: <strong>120.00</strong>.</li>
+        <li><code>produto3 = new Produto("Camisa", 100.00, ["formal"]);</code> → Preço: <strong>100.00</strong> (Atenção: <code>produto3</code> <strong>NUNCA</strong> é adicionado ao carrinho!).</li>
+        <li><code>produto1.aplicarDesconto(10);</code> → Desconto de 10% em 49.90 = 4.99. Novo preço de <code>produto1</code>: <code>49.90 - 4.99 = 44.91</code>.</li>
+        <li><code>carrinho = new Carrinho([produto1, produto2]);</code> → O array contém <strong>2 produtos</strong> (<code>produto1</code> e <code>produto2</code>).</li>
+        <li>Cálculo do total: <code>44.91 + 120.00 = 164.91</code>.</li>
+        <li>Saída final de <code>carrinho.toString()</code>: <code>"Carrinho: 2 produtos, Total: R$164.91"</code>.</li>
+      </ol>
+    </div>
+
+    <!-- SEÇÃO DE QUIZ -->
+    <div class="quiz-section">
+      <h2>Simulador & Quiz da Aula 3</h2>
+      <p>Teste seus conhecimentos com as questões 3 e 8 da prova e perguntas complementares.</p>
+
+      <!-- QUESTÃO OFICIAL 3 -->
+      <div class="quiz-card official" id="q3">
+        <span class="quiz-tag tag-official">Questão 3 da Prova Oficial</span>
+        <div class="question-title">No código do Produto e Carrinho analisado acima, após aplicar o desconto de 10% no produto1 e instanciar o carrinho com <code>[produto1, produto2]</code>, qual é a saída do <code>console.log(carrinho.toString())</code>?</div>
+        <ul class="options-list">
+          <li><button class="option-btn" onclick="checkAnswer('q3', 0, false)">A) Carrinho: 2 produtos, Total: R$169.90</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q3', 1, false)">B) Carrinho: 3 produtos, Total: R$264.90</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q3', 2, true)">C) Carrinho: 2 produtos, Total: R$164.91</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q3', 3, false)">D) Carrinho: 2 produtos, Total: R$264.91</button></li>
+        </ul>
+        <div class="feedback" id="q3-feedback"></div>
+      </div>
+
+      <!-- QUESTÃO OFICIAL 8 -->
+      <div class="quiz-card official" id="q8">
+        <span class="quiz-tag tag-official">Questão 8 da Prova Oficial</span>
+        <div class="question-title">Considere o código: <code>const p1 = new Pessoa("Alice", 30); console.log(p1.saudacao());</code>. Com base nesse código, qual afirmativa é correta?</div>
+        <ul class="options-list">
+          <li><button class="option-btn" onclick="checkAnswer('q8', 0, false)">A) Pessoa é o método responsável por inicializar o objeto (construtor).</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q8', 1, true)">B) p1 é uma instância da classe Pessoa.</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q8', 2, false)">C) saudacao é um objeto da classe Pessoa.</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q8', 3, false)">D) constructor é um método usado para imprimir atributos de um objeto no console.</button></li>
+        </ul>
+        <div class="feedback" id="q8-feedback"></div>
+      </div>
+
+      <!-- QUESTÃO COMPLEMENTAR 1 -->
+      <div class="quiz-card" id="q3_bonus1">
+        <span class="quiz-tag tag-bonus">Questão Inédita 3.1</span>
+        <div class="question-title">Em TypeScript, qual é a finalidade da palavra-chave <code>this</code> dentro dos métodos de uma classe?</div>
+        <ul class="options-list">
+          <li><button class="option-btn" onclick="checkAnswer('q3_bonus1', 0, false)">A) Apontar estaticamente para o arquivo de módulo no qual o código foi importado.</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q3_bonus1', 1, false)">B) Declarar variáveis globais acessíveis fora do escopo da própria classe.</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q3_bonus1', 2, true)">C) Fazer referência à instância específica do objeto que está executando aquele método.</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q3_bonus1', 3, false)">D) Chamar recursivamente o construtor da superclasse pai em tempo de execução.</button></li>
+        </ul>
+        <div class="feedback" id="q3_bonus1-feedback"></div>
+      </div>
+
+      <!-- QUESTÃO COMPLEMENTAR 2 -->
+      <div class="quiz-card" id="q3_bonus2">
+        <span class="quiz-tag tag-bonus">Questão Inédita 3.2</span>
+        <div class="question-title">Considere a classe <code>Conta { saldo: number = 100; depositar(v: number) { this.saldo += v; } }</code>. Se executarmos <code>const c1 = new Conta(); const c2 = new Conta(); c1.depositar(50);</code>, quais serão os valores de <code>c1.saldo</code> e <code>c2.saldo</code> respectivamente?</div>
+        <ul class="options-list">
+          <li><button class="option-btn" onclick="checkAnswer('q3_bonus2', 0, false)">A) 150 e 150, pois o estado de atributos é compartilhado entre todas as instâncias.</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q3_bonus2', 1, true)">B) 150 e 100, pois cada instância mantém sua própria cópia independente de atributos.</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q3_bonus2', 2, false)">C) 100 e 150, pois as alterações ocorrem de forma inversa na ordem de alocação.</button></li>
+          <li><button class="option-btn" onclick="checkAnswer('q3_bonus2', 3, false)">D) 50 e 100, pois o valor do depósito substitui o saldo inicial do objeto c1.</button></li>
+        </ul>
+        <div class="feedback" id="q3_bonus2-feedback"></div>
+      </div>
+    </div>
+
+    <footer>
+      <p>Curso Preparatório POO & Computação • <a href="0004-excecoes-e-tdd.html" style="color:var(--accent);">Próxima Aula: Exceções e TDD →</a></p>
+    </footer>
+  </div>
+
+  <script>
+    const explanations = {
+      q3: "<strong>Correta: C!</strong> O produto1 custava 49.90 e com 10% de desconto passou a custar 44.91. O carrinho recebeu apenas produto1 e produto2 (120.00), totalizando 2 produtos e R$164.91. O produto3 não foi inserido no carrinho.",
+      q8: "<strong>Correta: B!</strong> 'p1' é a variável que armazena a instância gerada pelo operador `new Pessoa()`. 'Pessoa' é a classe; 'saudacao' é um método; e 'constructor' inicializa os atributos, não imprime no console.",
+      q3_bonus1: "<strong>Correta: C!</strong> Em TypeScript/JavaScript e em POO no geral, 'this' refere-se ao objeto concreto corrente sobre o qual a mensagem/método está sendo invocado.",
+      q3_bonus2: "<strong>Correta: B!</strong> Instâncias de classes encapsulam seus próprios estados na memória heap de forma independente. Alterar o saldo de c1 não afeta o saldo de c2."
+    };
+
+    function checkAnswer(questionId, selectedIdx, isCorrect) {
+      const card = document.getElementById(questionId);
+      const buttons = card.querySelectorAll('.option-btn');
+      const feedback = document.getElementById(questionId + '-feedback');
+
+      buttons.forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === selectedIdx) {
+          btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+        }
+      });
+
+      feedback.className = 'feedback show ' + (isCorrect ? 'correct-feedback' : 'incorrect-feedback');
+      feedback.innerHTML = (isCorrect ? "✅ <strong>Sensacional, acertou!</strong><br>" : "❌ <strong>Resposta incorreta.</strong><br>") + explanations[questionId];
+    }
+  </script>
+</body>
+</html>
